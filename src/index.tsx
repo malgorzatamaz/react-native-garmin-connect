@@ -17,6 +17,14 @@ const GarminConnect = NativeModules.GarminConnect
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return GarminConnect.multiply(a, b);
+export function init() {
+  return GarminConnect.init();
+}
+
+export function destroy() {
+  return GarminConnect.destroy();
+}
+
+export async function getDeviceList() {
+  return await GarminConnect.getDeviceList();
 }

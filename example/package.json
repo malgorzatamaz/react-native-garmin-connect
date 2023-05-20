@@ -8,15 +8,28 @@
     "start": "react-native start",
     "pods": "pod-install --quiet"
   },
+  "jest": {
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
+  },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.71.7"
+    "react-native": "0.71.7",
+    "react-native-paper": "^5.8.0",
+    "react-native-safe-area-context": "^4.5.3",
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
+    "@testing-library/jest-native": "^5.4.2",
+    "@testing-library/react-native": "^12.1.2",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "jest": "^29.5.0",
     "metro-react-native-babel-preset": "0.73.9",
-    "babel-plugin-module-resolver": "^4.1.0"
+    "react-test-renderer": "^18.2.0"
   }
 }
