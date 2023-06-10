@@ -25,6 +25,14 @@ export function destroy() {
   return GarminConnect.destroy();
 }
 
-export async function getDeviceList() {
-  return await GarminConnect.getDeviceList();
+export async function getKnownDeviceList() {
+  return await GarminConnect.getKnownDeviceList();
+}
+
+export async function getConnectedDeviceList() {
+  return await GarminConnect.getConnectedDeviceList();
+}
+
+export async function connectDevice(name: string) {
+  return await GarminConnect.connectDevice(name);
 }

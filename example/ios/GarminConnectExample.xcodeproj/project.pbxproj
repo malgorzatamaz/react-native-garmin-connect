@@ -14,6 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-GarminConnectExample-GarminConnectExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-GarminConnectExample-GarminConnectExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		590B7D5960744DAF83F51091 /* device_connected.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B3230C726C4A5D906ECC44 /* device_connected.png */; };
+		2D71345265E24FAFAB04A791 /* cyclist.gif in Resources */ = {isa = PBXBuildFile; fileRef = B368497568C24CAEBC4836B4 /* cyclist.gif */; };
+		1CD89E4983254EEEAFC95669 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0190BA5AE84EAB80A6A4A2 /* location.png */; };
+		3D2595FA7DCC446BA1555CFD /* location_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A0D1A0AAC414D20A0C7AF72 /* location_selected.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GarminConnectExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-GarminConnectExample-GarminConnectExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GarminConnectExample-GarminConnectExampleTests.release.xcconfig"; path = "Target Support Files/Pods-GarminConnectExample-GarminConnectExampleTests/Pods-GarminConnectExample-GarminConnectExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		C7B3230C726C4A5D906ECC44 /* device_connected.png */ = {isa = PBXFileReference; name = "device_connected.png"; path = "../assets/device_connected.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B368497568C24CAEBC4836B4 /* cyclist.gif */ = {isa = PBXFileReference; name = "cyclist.gif"; path = "../assets/cyclist.gif"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DA0190BA5AE84EAB80A6A4A2 /* location.png */ = {isa = PBXFileReference; name = "location.png"; path = "../assets/location.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6A0D1A0AAC414D20A0C7AF72 /* location_selected.png */ = {isa = PBXFileReference; name = "location_selected.png"; path = "../assets/location_selected.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +130,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				2E3B25BBB40D46EF89DA6665 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +156,18 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		2E3B25BBB40D46EF89DA6665 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				C7B3230C726C4A5D906ECC44 /* device_connected.png */,
+				B368497568C24CAEBC4836B4 /* cyclist.gif */,
+				DA0190BA5AE84EAB80A6A4A2 /* location.png */,
+				6A0D1A0AAC414D20A0C7AF72 /* location_selected.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -244,6 +265,10 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				590B7D5960744DAF83F51091 /* device_connected.png in Resources */,
+				2D71345265E24FAFAB04A791 /* cyclist.gif in Resources */,
+				1CD89E4983254EEEAFC95669 /* location.png in Resources */,
+				3D2595FA7DCC446BA1555CFD /* location_selected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

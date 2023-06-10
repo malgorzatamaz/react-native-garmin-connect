@@ -100,6 +100,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+        Properties properties = new Properties() 
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        manifestPlaceholders = [MAPS_API_KEY: "${properties.getProperty('MAPS_API_KEY')}"]
     }
 
     splits {
@@ -165,6 +169,13 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+  implementation 'com.facebook.fresco:animated-base-support:1.3.0'
+  implementation 'com.facebook.fresco:animated-gif:2.5.0'
+  implementation 'com.facebook.fresco:animated-webp:2.5.0'
+  implementation 'com.facebook.fresco:animated-drawable:2.5.0'
+  implementation 'com.facebook.fresco:webpsupport:2.5.0'
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

@@ -1,46 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
+import { AnimationView } from './screens/AnimationView';
+import { NavigationContainer } from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from 'react';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import { PaperProvider } from 'react-native-paper';
-import { init, destroy } from 'react-native-garmin-connect';
-import { DevicesList } from './components/DevicesList';
+import { DeviceManager } from './screens/DeviceManager/DeviceManager';
+import { ChartView } from './screens/ChartView';
+import useDeviceConnection from './useDeviceConnection';
+
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
-  const [isSdkReady, setIsSdkReady] = useState(false);
-  const onSdkReady = (isReady: boolean) => {
-    console.log('onSdkReady', isReady);
-    setIsSdkReady(isReady);
-  };
-
-  const onError = (error: string) => {
-    console.log('onError', error);
-  };
-  const onInfo = (info: string) => {
-    console.log('onInfo', info);
-  };
-
-  useEffect(() => {
-    DeviceEventEmitter.addListener('onSdkReady', onSdkReady);
-    DeviceEventEmitter.addListener('onError', onError);
-    DeviceEventEmitter.addListener('onInfo', onInfo);
-    init();
-
-    return () => destroy();
-  }, []);
+  useDeviceConnection();
 
   return (
-    <PaperProvider>
-      <View style={styles.container}>
-        <DevicesList isSdkReady={isSdkReady} />
-      </View>
-    </PaperProvider>
+    <NavigationContainer>
+      <Tab.Navigator initialRouteName="ChartView">
+        <Tab.Screen
+          name="DeviceManager"
+          options={{
+            tabBarLabel: 'Devices',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="devices" color={color} size={26} />
+            ),
+          }}
+          component={DeviceManager}
+        />
+        <Tab.Screen
+          name="ChartView"
+          options={{
+            tabBarLabel: 'Chart',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="chart-areaspline-variant"
+                color={color}
+                size={26}
+              />
+            ),
+          }}
+          component={ChartView}
+        />
+        <Tab.Screen
+          name="AnimationView"
+          options={{
+            tabBarLabel: 'Animation',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="bike" color={color} size={26} />
+            ),
+          }}
+          component={AnimationView}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

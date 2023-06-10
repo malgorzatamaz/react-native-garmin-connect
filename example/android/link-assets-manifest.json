@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/cyclist.gif",
+      "sha1": "3ef7cc0aa1886d1854509025859b709c50e65a04"
+    },
+    {
+      "path": "assets/device_connected.png",
+      "sha1": "6d2dd95a43f5e1cad07639ad124db11f2593ed88"
+    },
+    {
+      "path": "assets/location.png",
+      "sha1": "a172235e5abc8c4e60ce32aa5de408bbc5c49aad"
+    },
+    {
+      "path": "assets/location_selected.png",
+      "sha1": "44730ce7a87412a18a82d0781a1fb5ae98a34586"
+    }
+  ]
+}

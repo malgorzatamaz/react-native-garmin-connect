@@ -29,3 +29,9 @@ MIT
 ---
 
 Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+
+<a href="https://www.flaticon.com/free-icons/wifi" title="wifi icons">Icon attribution - Wifi icons created by Google - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/cyclist" title="cyclist icons">Cyclist icons created by Flat Icons - Flaticon</a>
+
+Gif https://www.moin-motion.com/

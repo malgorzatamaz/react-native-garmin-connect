@@ -8,7 +8,7 @@ import { Status } from '../../../types';
 test('examples of some things', async () => {
   const expectedDeviceName = 'Garmin Fenix 5s';
   const device = { name: expectedDeviceName, status: Status.CONNECTED };
-  render(<DevicesListItem item={device} />);
+  render(<DevicesListItem isConnected={false} item={device} />);
   const deviceNameOutput = await screen.findByTestId('name');
   expect(deviceNameOutput).toHaveTextContent(expectedDeviceName);
 });
