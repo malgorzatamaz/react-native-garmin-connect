@@ -8,6 +8,7 @@ import com.garmin.android.connectiq.ConnectIQ
 import com.garmin.android.connectiq.ConnectIQ.*
 import com.garmin.android.connectiq.IQApp
 import com.garmin.android.connectiq.IQDevice
+import com.garmin.android.connectiq.IQDevice.IQDeviceStatus
 import com.garmin.android.connectiq.exception.InvalidStateException
 import com.garmin.android.connectiq.exception.ServiceUnavailableException
 import com.google.gson.Gson
@@ -64,7 +65,40 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getKnownDeviceList(promise: Promise) {
+  fun getDevicesList(promise: Promise) {
+    val devices: WritableArray = WritableNativeArray()
+
+    try {
+      val knownDevices = connectIQ?.knownDevices;
+      val connectedDevices = connectIQ?.connectedDevices;
+
+      knownDevices?.forEach { knownDevice ->
+        val writableMap = Arguments.createMap()
+        val device = connectedDevices?.firstOrNull { connectedDevice ->
+          connectedDevice?.friendlyName.equals(knownDevice.friendlyName)}
+        writableMap.putString("name", knownDevice.friendlyName);
+        if(device != null) {
+          writableMap.putString("status", IQDeviceStatus.CONNECTED.toString())
+        }
+        else {
+          writableMap.putString("status", IQDeviceStatus.NOT_CONNECTED.toString())
+        }
+
+        devices.pushMap(writableMap)
+      }
+    } catch (e: InvalidStateException) {
+      Log.d("error", "ConnectIQ is not in a valid state");
+      promise.reject(e);
+    } catch (e: ServiceUnavailableException) {
+      Log.d("error", "ServiceUnavailableException");
+      promise.reject(e);
+    }
+
+    promise.resolve(devices);
+  }
+
+  @ReactMethod
+  fun getKnownDevicesList(promise: Promise) {
     val devices: WritableArray = WritableNativeArray()
     try {
       val knownDevices = connectIQ?.knownDevices;
@@ -76,22 +110,16 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
     } catch (e: InvalidStateException) {
       Log.d("error", "ConnectIQ is not in a valid state");
       promise.reject(e);
-      // This generally means you forgot to call initialize(), but since
-      // we are in the callback for initialize(), this should never happen
     } catch (e: ServiceUnavailableException) {
       Log.d("error", "ServiceUnavailableException");
       promise.reject(e);
-      // This will happen if for some reason your app was not able to connect
-      // to the ConnectIQ service running within Garmin Connect Mobile.  This
-      // could be because Garmin Connect Mobile is not installed or needs to
-      // be upgraded.
     }
 
     promise.resolve(devices);
   }
 
   @ReactMethod
-  fun getConnectedDeviceList(promise: Promise) {
+  fun getAvailableDevicesList(promise: Promise) {
     val devices: WritableArray = WritableNativeArray()
 
     try {
@@ -105,15 +133,9 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
     } catch (e: InvalidStateException) {
       Log.d("error", "ConnectIQ is not in a valid state");
       promise.reject(e);
-      // This generally means you forgot to call initialize(), but since
-      // we are in the callback for initialize(), this should never happen
     } catch (e: ServiceUnavailableException) {
       promise.reject(e);
       Log.d("error", "ServiceUnavailableException");
-      // This will happen if for some reason your app was not able to connect
-      // to the ConnectIQ service running within Garmin Connect Mobile.  This
-      // could be because Garmin Connect Mobile is not installed or needs to
-      // be upgraded.
     }
     promise.resolve(devices)
   }
@@ -163,12 +185,13 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   fun connectDevice(deviceName: String, promise: Promise) {
     val TAG = "connectDevice";
     var registerdForDeviceEvents = false;
-    var registerdForApplicationInfo = false;
     var registerForAppEvents = false;
 
     if (deviceName != null && sdkReady) {
       val connectIQdevice =
-        connectIQ?.knownDevices?.first { device -> device.friendlyName.equals(deviceName) }
+        connectIQ?.knownDevices?.first {
+            device -> device.friendlyName.equals(deviceName)
+        }
 
       // Register for device status updates
       try {
@@ -177,18 +200,6 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
       } catch (e: InvalidStateException) {
         Log.d(TAG, "InvalidStateException:  We should not be here!")
         promise.reject(e)
-      }
-
-      // Register for application status updates
-      try {
-        connectIQ?.getApplicationInfo(AppConstants.APP_ID, connectIQdevice, this)
-        registerdForApplicationInfo = true;
-      } catch (e1: InvalidStateException) {
-        Log.d(TAG, "e1: " + e1.message)
-        promise.reject(e1)
-      } catch (e2: ServiceUnavailableException) {
-        Log.d(TAG, "e2: " + e2.message)
-        promise.reject(e2)
       }
 
       // Register to receive messages from the device
@@ -201,9 +212,10 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
       }
     }
 
-    if (registerForAppEvents && registerdForDeviceEvents && registerdForApplicationInfo) promise.resolve(
-      null
-    )
+    if (registerForAppEvents && registerdForDeviceEvents) {
+      promise.resolve(null)
+    }
+
     else promise.reject(Exception("Not connected to every events"))
   }
 
@@ -215,16 +227,16 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   ) {
     if (message != null && message.size > 0) {
       for (m: Any in message) {
-          try {
-            val payload = (m as HashMap<String,Any>)[AppConstants.KEY_MESSAGE_PAYLOAD]
-            val type = (m as HashMap<String,String>)[AppConstants.KEY_MESSAGE_TYPE]
-            val payloadStr = Gson().toJson(payload).toString()
-            if (type !== null && payload !== null) {
-              onMessage(type, payloadStr)
-            }
-          } catch (e: Exception) {
-            onError(e.toString())
+        try {
+          val payload = (m as HashMap<String, Any>)[AppConstants.KEY_MESSAGE_PAYLOAD]
+          val type = (m as HashMap<String, String>)[AppConstants.KEY_MESSAGE_TYPE]
+          val payloadStr = Gson().toJson(payload).toString()
+          if (type !== null && payload !== null) {
+            onMessage(type, payloadStr)
           }
+        } catch (e: Exception) {
+          onError(e.toString())
+        }
       }
     } else {
       Log.e("onMessage", "Received an empty message from the application");

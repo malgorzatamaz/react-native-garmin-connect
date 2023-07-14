@@ -14,12 +14,12 @@ jest.mock('react-native-garmin-connect', () => ({
 
 test('render of devices list', async () => {
   const connectedDeviceName = 'Fenix 5s';
-  jest.spyOn(connectModule, 'getKnownDeviceList');
+  jest.spyOn(connectModule, 'getKnownDevicesList');
   const { rerender } = render(<DevicesList isSdkReady={false} />);
 
   rerender(<DevicesList isSdkReady={true} />);
   await waitFor(() =>
-    expect(connectModule.getKnownDeviceList).toHaveBeenCalledTimes(1)
+    expect(connectModule.getKnownDevicesList).toHaveBeenCalledTimes(1)
   );
   const devices = await screen.findAllByTestId('deviceListItem', {
     exact: false,
