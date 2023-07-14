@@ -6,10 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import {
-  getKnownDeviceList,
-  getConnectedDeviceList,
-} from 'react-native-garmin-connect';
+import { getDevicesList } from 'react-native-garmin-connect';
 
 import { DevicesListItem } from './DevicesListItem';
 import { Device, Status } from '../../types';
@@ -23,19 +20,8 @@ export const DevicesList = ({ isSdkReady }: Props) => {
   const [connectDevice, setConnectedDevice] = useState<string | undefined>();
 
   const getDevices = useCallback(async () => {
-    const knownDevices = await getKnownDeviceList();
-    const connectedDevices = await getConnectedDeviceList();
-    const mappedDevices = knownDevices.map((knownDevice: string) => {
-      const isDeviceConnected = !!connectedDevices.find(
-        (connectedDevice: string) => connectedDevice === knownDevice
-      );
-      return {
-        name: knownDevice,
-        status: isDeviceConnected ? Status.CONNECTED : Status.DISCONNECTED,
-      };
-    });
-
-    setDevices(mappedDevices);
+    const devicesList = await getDevicesList();
+    setDevices(devicesList);
   }, []);
 
   const onDeviceStatusChanged = useCallback(
@@ -71,7 +57,9 @@ export const DevicesList = ({ isSdkReady }: Props) => {
 
   return (
     <>
-      <Text variant="headlineMedium">Devices</Text>
+      <Text style={styles.title} variant="headlineMedium">
+        Devices
+      </Text>
       <FlatList<Device>
         testID="deviceList"
         data={devices}
@@ -89,4 +77,5 @@ const styles = StyleSheet.create({
   button: {
     margin: 30,
   },
+  title: { padding: 20 },
 });

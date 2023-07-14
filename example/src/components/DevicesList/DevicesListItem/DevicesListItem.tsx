@@ -1,43 +1,35 @@
 import React, { memo, useCallback } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connectDevice } from 'react-native-garmin-connect';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Device, Status } from '../../../types';
 import { DeviceStatus } from '../DeviceStatus';
+import { Text } from 'react-native-paper';
 
 type Props = { item: Device; isConnected: boolean };
 
 export const DevicesListItem = memo(({ item, isConnected }: Props) => {
-  console.log(isConnected);
-
   const onPress = useCallback(() => {
-    connectDevice(item.name)
-      .then(() => {
-        console.log('connected');
-      })
-      .catch(() => {
-        console.log('not connected');
-      });
+    connectDevice(item.name);
   }, [item.name]);
+
+  const isWatch = item.name.toLowerCase().includes('fenix');
 
   return (
     <TouchableOpacity
       onPress={onPress}
       testID={`deviceListItem_${item.name}`}
-      style={[
-        styles.container,
-        item.status === Status.DISCONNECTED ? styles.disconnected : {},
-      ]}
+      style={styles.container}
       disabled={item.status === Status.DISCONNECTED}
     >
-      <View
-        style={[
-          styles.container,
-          item.status === Status.DISCONNECTED ? styles.disconnected : {},
-        ]}
-      >
-        <Text style={styles.text} testID="name">
+      <View style={[styles.container]}>
+        {isWatch ? (
+          <MaterialCommunityIcons name="watch" color="black" size={35} />
+        ) : (
+          <MaterialCommunityIcons name="cellphone" color="black" size={35} />
+        )}
+        <Text style={styles.text} variant="bodyMedium" testID="name">
           {item.name}
         </Text>
         {isConnected ? (
@@ -56,11 +48,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
-    height: 40,
+    height: 60,
     width: '100%',
     padding: 10,
   },
-  disconnected: { backgroundColor: '#E7E7E7' },
   text: {
     color: 'black',
     flex: 1,
