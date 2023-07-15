@@ -1,7 +1,17 @@
-import { UpdateMode } from 'realm';
+import { Results, UpdateMode } from 'realm';
 import realm from './realm';
 
 import type { AllMessagePayload, DataSnapshot } from '../types';
+
+export type DataSnapshotResult = Results<
+  {
+    time: number;
+    speed: number;
+    angle: number;
+    lat: number;
+    lng: number;
+  } & Realm.Object
+>;
 
 const saveSnapshot = (data?: AllMessagePayload) => {
   if (!data) return;
@@ -21,7 +31,7 @@ const saveSnapshot = (data?: AllMessagePayload) => {
   });
 };
 
-const getAllSnapshots = () => {
+const getAllSnapshots = (): DataSnapshotResult => {
   return realm.objects<DataSnapshot>('DataSnapshot');
 };
 
