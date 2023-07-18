@@ -10,5 +10,6 @@ object AppConstants {
 
   const val APP_ID = "467f4bb7-cd3c-45c4-a39b-9bb78260c9ed"
 
-
+  const val STATUS_ONLINE = "ONLINE"
+  const val STATUS_OFFLINE = "OFFLINE"
 }

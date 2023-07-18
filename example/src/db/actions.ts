@@ -15,6 +15,7 @@ export type DataSnapshotResult = Results<
 
 const saveSnapshot = (data?: AllMessagePayload) => {
   if (!data) return;
+  console.log(data);
 
   realm.write(() => {
     realm.create(

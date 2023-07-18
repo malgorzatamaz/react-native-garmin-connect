@@ -11,9 +11,7 @@ export const DeviceStatus = memo(({ status }: Props) => {
       testID="status"
       style={[
         styles.dot,
-        status === Status.CONNECTED
-          ? styles.dotConnected
-          : styles.dotDisconnected,
+        status === Status.ONLINE ? styles.dotOnline : styles.dotOffline,
       ]}
     />
   );
@@ -21,6 +19,6 @@ export const DeviceStatus = memo(({ status }: Props) => {
 
 const styles = StyleSheet.create({
   dot: { height: 20, width: 20, borderRadius: 20 },
-  dotConnected: { backgroundColor: 'green' },
-  dotDisconnected: { backgroundColor: 'red' },
+  dotOnline: { backgroundColor: 'green' },
+  dotOffline: { backgroundColor: 'red' },
 });

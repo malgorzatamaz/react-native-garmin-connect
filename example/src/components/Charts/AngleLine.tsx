@@ -16,7 +16,7 @@ export const AngleLine = ({ selectedIndex, snapshots }: Props) => {
     if (snapshots) {
       return snapshots.map(({ time, angle }) => ({
         x: time,
-        y: angle,
+        y: parseInt(angle.toFixed(0), 10),
       }));
     }
 

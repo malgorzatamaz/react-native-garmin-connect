@@ -21,7 +21,7 @@ export const DevicesListItem = memo(({ item, isConnected }: Props) => {
       onPress={onPress}
       testID={`deviceListItem_${item.name}`}
       style={styles.container}
-      disabled={item.status === Status.DISCONNECTED}
+      disabled={item.status === Status.OFFLINE}
     >
       <View style={[styles.container]}>
         {isWatch ? (
@@ -33,7 +33,7 @@ export const DevicesListItem = memo(({ item, isConnected }: Props) => {
           {item.name}
         </Text>
         {isConnected ? (
-          <MaterialCommunityIcons name="bluetooth" color="black" size={26} />
+          <MaterialCommunityIcons name="connection" color="black" size={26} />
         ) : null}
         <DeviceStatus status={item.status} />
       </View>

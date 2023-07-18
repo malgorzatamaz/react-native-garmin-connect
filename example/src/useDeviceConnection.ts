@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 
 import { Message, MessageType } from './types';
-import { saveSnapshot } from './db/actions';
+import { deleteAllSnapshots, saveSnapshot } from './db/actions';
 import { angleValuesAtom, isSdkReadyAtom } from './state';
 
 export default function useDeviceConnection() {
@@ -37,7 +37,10 @@ export default function useDeviceConnection() {
   );
 
   useEffect(() => {
-    if (!isSdkReady) init();
+    if (!isSdkReady) {
+      init();
+      // deleteAllSnapshots();
+    }
   }, [isSdkReady]);
 
   useEffect(() => {
@@ -48,6 +51,7 @@ export default function useDeviceConnection() {
 
     return () => {
       destroy();
+
       DeviceEventEmitter.removeAllListeners();
     };
   }, [onMessage, onSdkReady]);

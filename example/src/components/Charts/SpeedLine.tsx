@@ -3,7 +3,7 @@ import { Line, Tooltip } from 'react-native-responsive-linechart';
 import type { LineHandle } from 'react-native-responsive-linechart/lib/Line';
 
 import usePrev from '../../hooks/usePrev';
-import type { DataSnapshotResult } from 'example/src/db/actions';
+import type { DataSnapshotResult } from '../../db/actions';
 import { speedTheme } from './utils';
 
 type ChartValues = { x: number; y: number };
@@ -18,12 +18,14 @@ export const SpeedLine = ({ selectedIndex, snapshots }: Props) => {
     if (snapshots) {
       return snapshots.map(({ time, speed }) => ({
         x: time,
-        y: speed,
+        y: parseInt(speed.toFixed(0), 10),
       }));
     }
 
     return [];
   }, [snapshots]);
+
+  console.log(speedData);
 
   useEffect(() => {
     if (!!selectedIndex && selectedIndex !== prevSelectedIndex) {

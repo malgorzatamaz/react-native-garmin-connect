@@ -11,6 +11,8 @@ import com.garmin.android.connectiq.IQDevice
 import com.garmin.android.connectiq.IQDevice.IQDeviceStatus
 import com.garmin.android.connectiq.exception.InvalidStateException
 import com.garmin.android.connectiq.exception.ServiceUnavailableException
+import com.garminconnect.AppConstants.STATUS_OFFLINE
+import com.garminconnect.AppConstants.STATUS_ONLINE
 import com.google.gson.Gson
 
 class GarminConnectModule(reactContext: ReactApplicationContext) :
@@ -75,15 +77,13 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
       knownDevices?.forEach { knownDevice ->
         val writableMap = Arguments.createMap()
         val device = connectedDevices?.firstOrNull { connectedDevice ->
-          connectedDevice?.friendlyName.equals(knownDevice.friendlyName)}
+          connectedDevice?.friendlyName.equals(knownDevice.friendlyName)
+        }
         writableMap.putString("name", knownDevice.friendlyName);
-        if(device != null) {
-          writableMap.putString("status", IQDeviceStatus.CONNECTED.toString())
-        }
-        else {
-          writableMap.putString("status", IQDeviceStatus.NOT_CONNECTED.toString())
-        }
-
+        writableMap.putString(
+          "status",
+          if (device != null) STATUS_ONLINE else STATUS_OFFLINE
+        )
         devices.pushMap(writableMap)
       }
     } catch (e: InvalidStateException) {
@@ -189,8 +189,8 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
 
     if (deviceName != null && sdkReady) {
       val connectIQdevice =
-        connectIQ?.knownDevices?.first {
-            device -> device.friendlyName.equals(deviceName)
+        connectIQ?.knownDevices?.first { device ->
+          device.friendlyName.equals(deviceName)
         }
 
       // Register for device status updates
@@ -214,9 +214,7 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
 
     if (registerForAppEvents && registerdForDeviceEvents) {
       promise.resolve(null)
-    }
-
-    else promise.reject(Exception("Not connected to every events"))
+    } else promise.reject(Exception("Not connected to every events"))
   }
 
   override fun onMessageReceived(

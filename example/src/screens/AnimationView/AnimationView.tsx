@@ -1,22 +1,34 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { useAtomValue } from 'jotai';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { Observable } from 'rxjs';
+import { Text } from 'react-native-paper';
 
+import { useAngleValues } from './useAngleValues';
 import { angleValuesAtom } from '../../state';
+import { useAtomValue } from 'jotai';
+
 const Icon = require('../../../assets/cyclist.gif');
 
 export const AnimationView = () => {
+  const angleValues = useAtomValue(angleValuesAtom);
+  const angle = useMemo(() => {
+    console.log(angleValues);
+    const average =
+      angleValues.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      ) / angleValues.length;
+
+    return average.toFixed(0);
+  }, [angleValues]);
+
   const rotateValue = useSharedValue(0);
   const { width } = useWindowDimensions();
-  const values = useAtomValue(angleValuesAtom);
-
   const updateAngle = useCallback(
     (newValue: number) => {
       rotateValue.value = withTiming(newValue, {
@@ -27,27 +39,7 @@ export const AnimationView = () => {
     [rotateValue]
   );
 
-  useEffect(() => {
-    const array = new Observable<number>(function (observer) {
-      const valueArray = values;
-      if (!valueArray || !valueArray.length) return;
-
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < valueArray.length) {
-          const value = valueArray[i];
-          if (value) {
-            observer.next(parseInt(value.toString(), 10));
-            i++;
-          }
-        } else {
-          clearInterval(interval);
-        }
-      }, 100);
-    });
-
-    array.subscribe((observer) => updateAngle(observer));
-  }, [updateAngle, values]);
+  useAngleValues(updateAngle);
 
   const animatedStyles = useAnimatedStyle(() => {
     //clamp value
@@ -73,6 +65,10 @@ export const AnimationView = () => {
           resizeMode="contain"
         />
       </View>
+
+      <Text variant="headlineMedium">
+        {angleValues.length ? <>{angle} °</> : null}
+      </Text>
     </View>
   );
 };

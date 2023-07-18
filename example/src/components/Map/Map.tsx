@@ -2,17 +2,20 @@ import React, { useCallback, useMemo } from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StyleSheet } from 'react-native';
 
-import { getAllSnapshots } from '../../db/actions';
+import { DataSnapshotResult } from '../../db/actions';
 import type { DataSnapshot, Coordinates } from '../../types';
 
 const location = require(`../../../assets/location.png`);
 const locationSelected = require(`../../../assets/location_selected.png`);
 
-type Props = { selectedIndex?: number; onPointPress: (index: number) => void };
+type Props = {
+  snapshots?: DataSnapshotResult;
+  selectedIndex?: number;
+  onPointPress: (index: number) => void;
+};
 
-export const Map = ({ onPointPress, selectedIndex }: Props) => {
+export const Map = ({ onPointPress, selectedIndex, snapshots }: Props) => {
   const coordinates = useMemo<Coordinates[]>(() => {
-    const snapshots = getAllSnapshots();
     if (snapshots) {
       return snapshots
         .filter((data) => !!data.lng)
@@ -23,7 +26,7 @@ export const Map = ({ onPointPress, selectedIndex }: Props) => {
         }));
     }
     return [];
-  }, []);
+  }, [snapshots]);
 
   const onPress = useCallback(
     (index) => {

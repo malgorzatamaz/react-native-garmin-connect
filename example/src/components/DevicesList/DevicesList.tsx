@@ -1,59 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  DeviceEventEmitter,
-  FlatList,
-  ListRenderItem,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import { FlatList, ListRenderItem, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { getDevicesList } from 'react-native-garmin-connect';
 
 import { DevicesListItem } from './DevicesListItem';
-import { Device, Status } from '../../types';
+import type { Device } from '../../types';
+import { useDevices } from './useDevices';
 
 type Props = {
   isSdkReady: boolean;
 };
 
 export const DevicesList = ({ isSdkReady }: Props) => {
-  const [devices, setDevices] = useState([]);
-  const [connectDevice, setConnectedDevice] = useState<string | undefined>();
-
-  const getDevices = useCallback(async () => {
-    const devicesList = await getDevicesList();
-    setDevices(devicesList);
-  }, []);
-
-  const onDeviceStatusChanged = useCallback(
-    ({ name, status }: { name: string; status: string }) => {
-      if (status === Status.CONNECTED) {
-        setConnectedDevice(name);
-      }
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (isSdkReady) getDevices();
-
-    DeviceEventEmitter.addListener('onError', onError);
-    DeviceEventEmitter.addListener(
-      'onDeviceStatusChanged',
-      onDeviceStatusChanged
-    );
-  }, [getDevices, isSdkReady, onDeviceStatusChanged]);
-
-  const onError = (error: string) => {
-    console.log('onError', error);
-  };
+  const { devices, refreshDevices, connectedDevice } = useDevices(isSdkReady);
 
   const renderItem: ListRenderItem<Device> = ({ item }) => (
-    <DevicesListItem item={item} isConnected={item.name === connectDevice} />
+    <DevicesListItem item={item} isConnected={item.name === connectedDevice} />
   );
-
-  const refresh = () => {
-    getDevices();
-  };
 
   return (
     <>
@@ -66,7 +28,7 @@ export const DevicesList = ({ isSdkReady }: Props) => {
         ListEmptyComponent={<Text variant="bodyMedium">No devices found</Text>}
         renderItem={renderItem}
       />
-      <Button mode="contained" style={styles.button} onPress={refresh}>
+      <Button mode="contained" style={styles.button} onPress={refreshDevices}>
         Refresh
       </Button>
     </>

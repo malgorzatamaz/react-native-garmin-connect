@@ -1,20 +1,20 @@
-import React, { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import {
   Chart,
   HorizontalAxis,
   VerticalAxis,
 } from 'react-native-responsive-linechart';
 
-import { getAllSnapshots } from '../../db/actions';
 import { SpeedLine } from './SpeedLine';
 import { AngleLine } from './AngleLine';
 import { horizontalTheme, verticalTheme } from './utils';
+import type { DataSnapshotResult } from '../../db/actions';
 
-type Props = { selectedIndex?: number };
+type Props = { selectedIndex?: number; snapshots?: DataSnapshotResult };
 
-export const Charts = ({ selectedIndex }: Props) => {
-  const snapshots = useMemo(() => getAllSnapshots(), []);
+export const Charts = ({ selectedIndex, snapshots }: Props) => {
+  if (!snapshots) return <View style={styles.container} />;
 
   return (
     <Chart
@@ -25,8 +25,8 @@ export const Charts = ({ selectedIndex }: Props) => {
     >
       <VerticalAxis tickCount={11} theme={verticalTheme} />
       <HorizontalAxis tickCount={5} theme={horizontalTheme} />
-      <SpeedLine snapshots={snapshots} selectedIndex={selectedIndex} />
       <AngleLine snapshots={snapshots} selectedIndex={selectedIndex} />
+      <SpeedLine snapshots={snapshots} selectedIndex={selectedIndex} />
     </Chart>
   );
 };

@@ -11,7 +11,7 @@ export const speedTheme = {
 };
 
 export const verticalTheme = {
-  labels: { formatter: (v: number) => v.toFixed(2) },
+  labels: { formatter: (v: number) => v.toFixed(0) },
 };
 
 export const horizontalTheme = {

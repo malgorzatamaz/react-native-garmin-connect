@@ -2,7 +2,8 @@ export type Device = { name: string; status: Status };
 
 export enum Status {
   CONNECTED = 'CONNECTED',
-  DISCONNECTED = 'DISCONNECTED',
+  ONLINE = 'ONLINE',
+  OFFLINE = 'OFFLINE',
 }
 
 export enum MessageType {
