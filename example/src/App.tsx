@@ -1,12 +1,12 @@
+import React from 'react';
 import { AnimationView } from './screens/AnimationView';
 import { NavigationContainer } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import { DeviceManager } from './screens/DeviceManager/DeviceManager';
 import { ChartView } from './screens/ChartView';
-import useDeviceConnection from './useDeviceConnection';
+import useDeviceConnection from './hooks/useDeviceConnection';
 import { PaperProvider } from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator();

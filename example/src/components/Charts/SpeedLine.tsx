@@ -25,8 +25,6 @@ export const SpeedLine = ({ selectedIndex, snapshots }: Props) => {
     return [];
   }, [snapshots]);
 
-  console.log(speedData);
-
   useEffect(() => {
     if (!!selectedIndex && selectedIndex !== prevSelectedIndex) {
       refSpeed.current?.setTooltipIndex(selectedIndex);

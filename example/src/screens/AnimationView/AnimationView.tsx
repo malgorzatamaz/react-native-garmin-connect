@@ -17,7 +17,6 @@ const Icon = require('../../../assets/cyclist.gif');
 export const AnimationView = () => {
   const angleValues = useAtomValue(angleValuesAtom);
   const angle = useMemo(() => {
-    console.log(angleValues);
     const average =
       angleValues.reduce(
         (accumulator, currentValue) => accumulator + currentValue,

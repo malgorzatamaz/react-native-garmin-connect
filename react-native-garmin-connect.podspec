@@ -14,9 +14,10 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://github.com/malgorzatamaz/react-native-garmin-connect.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}"
-
+  s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.vendored_frameworks = 'ios/ConnectIQ.xcframework'
   s.dependency "React-Core"
+  s.module_name = "GarminConnect"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
