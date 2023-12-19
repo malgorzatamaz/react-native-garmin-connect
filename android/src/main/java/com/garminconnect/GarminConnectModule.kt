@@ -35,7 +35,7 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun init() {
+  fun initialize() {
     myApp = IQApp(AppConstants.APP_ID);
     connectIQ = ConnectIQ.getInstance(getContext(), IQConnectType.WIRELESS);
     connectIQ?.initialize(getContext(), false, this);
@@ -97,48 +97,48 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
     promise.resolve(devices);
   }
 
-  @ReactMethod
-  fun getKnownDevicesList(promise: Promise) {
-    val devices: WritableArray = WritableNativeArray()
-    try {
-      val knownDevices = connectIQ?.knownDevices;
-      if (knownDevices != null && knownDevices.isNotEmpty()) {
-        knownDevices.forEach {
-          devices.pushString(it.friendlyName)
-        }
-      }
-    } catch (e: InvalidStateException) {
-      Log.d("error", "ConnectIQ is not in a valid state");
-      promise.reject(e);
-    } catch (e: ServiceUnavailableException) {
-      Log.d("error", "ServiceUnavailableException");
-      promise.reject(e);
-    }
+  // @ReactMethod
+  // fun getKnownDevicesList(promise: Promise) {
+  //   val devices: WritableArray = WritableNativeArray()
+  //   try {
+  //     val knownDevices = connectIQ?.knownDevices;
+  //     if (knownDevices != null && knownDevices.isNotEmpty()) {
+  //       knownDevices.forEach {
+  //         devices.pushString(it.friendlyName)
+  //       }
+  //     }
+  //   } catch (e: InvalidStateException) {
+  //     Log.d("error", "ConnectIQ is not in a valid state");
+  //     promise.reject(e);
+  //   } catch (e: ServiceUnavailableException) {
+  //     Log.d("error", "ServiceUnavailableException");
+  //     promise.reject(e);
+  //   }
 
-    promise.resolve(devices);
-  }
+  //   promise.resolve(devices);
+  // }
 
-  @ReactMethod
-  fun getAvailableDevicesList(promise: Promise) {
-    val devices: WritableArray = WritableNativeArray()
+  // @ReactMethod
+  // fun getAvailableDevicesList(promise: Promise) {
+  //   val devices: WritableArray = WritableNativeArray()
 
-    try {
-      val connectedDevices = connectIQ?.connectedDevices;
-      if (connectedDevices != null && connectedDevices.isNotEmpty()) {
+  //   try {
+  //     val connectedDevices = connectIQ?.connectedDevices;
+  //     if (connectedDevices != null && connectedDevices.isNotEmpty()) {
 
-        connectedDevices.forEach {
-          devices.pushString(it.friendlyName)
-        }
-      }
-    } catch (e: InvalidStateException) {
-      Log.d("error", "ConnectIQ is not in a valid state");
-      promise.reject(e);
-    } catch (e: ServiceUnavailableException) {
-      promise.reject(e);
-      Log.d("error", "ServiceUnavailableException");
-    }
-    promise.resolve(devices)
-  }
+  //       connectedDevices.forEach {
+  //         devices.pushString(it.friendlyName)
+  //       }
+  //     }
+  //   } catch (e: InvalidStateException) {
+  //     Log.d("error", "ConnectIQ is not in a valid state");
+  //     promise.reject(e);
+  //   } catch (e: ServiceUnavailableException) {
+  //     promise.reject(e);
+  //     Log.d("error", "ServiceUnavailableException");
+  //   }
+  //   promise.resolve(devices)
+  // }
 
   private fun disconnectDevice() {
     if (connectedDevice != null && sdkReady) {
@@ -155,31 +155,6 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
     }
   }
 
-  @ReactMethod
-  fun sendMessage(messageObject: WritableMap) {
-    val TAG = "sendMessage"
-    try {
-      Log.d(TAG, messageObject.toString())
-      try {
-        connectIQ?.sendMessage(
-          connectedDevice, myApp, messageObject
-        ) { iqDevice: IQDevice, iqApp: IQApp, iqMessageStatus: IQMessageStatus ->
-          run {
-            Log.e(TAG, "status: " + iqMessageStatus.name);
-          }
-        };
-      } catch (e: InvalidStateException) {
-        Log.e(TAG, "ConnectIQ is not in a valid state");
-      } catch (e: ServiceUnavailableException) {
-        Log.e(
-          TAG,
-          "ConnectIQ service is unavailable.   Is Garmin Connect Mobile installed and running?"
-        );
-      }
-    } catch (e: Exception) {
-      Log.e(TAG, "this isn't good");
-    }
-  }
 
   @ReactMethod
   fun connectDevice(deviceName: String, promise: Promise) {
@@ -216,6 +191,33 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
       promise.resolve(null)
     } else promise.reject(Exception("Not connected to every events"))
   }
+
+  @ReactMethod
+  fun sendMessage(messageObject: WritableMap) {
+    val TAG = "sendMessage"
+    try {
+      Log.d(TAG, messageObject.toString())
+      try {
+        connectIQ?.sendMessage(
+          connectedDevice, myApp, messageObject
+        ) { iqDevice: IQDevice, iqApp: IQApp, iqMessageStatus: IQMessageStatus ->
+          run {
+            Log.e(TAG, "status: " + iqMessageStatus.name);
+          }
+        };
+      } catch (e: InvalidStateException) {
+        Log.e(TAG, "ConnectIQ is not in a valid state");
+      } catch (e: ServiceUnavailableException) {
+        Log.e(
+          TAG,
+          "ConnectIQ service is unavailable.   Is Garmin Connect Mobile installed and running?"
+        );
+      }
+    } catch (e: Exception) {
+      Log.e(TAG, "this isn't good");
+    }
+  }
+
 
   override fun onMessageReceived(
     device: IQDevice?,

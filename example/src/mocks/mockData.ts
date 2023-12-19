@@ -1,6 +1,5 @@
 import type { DataSnapshot } from '../types';
 
-49.674816, 19.221005;
 const mockData: DataSnapshot[] = [
   {
     angle: 6.254013,

@@ -1,15 +1,20 @@
-import { init, destroy } from 'react-native-garmin-connect';
-import { DeviceEventEmitter } from 'react-native';
+import {
+  initialize,
+  destroy,
+  showDevicesList,
+} from 'react-native-garmin-connect';
 import { useCallback, useEffect } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 
-import { Message, MessageType } from './types';
-import { deleteAllSnapshots, saveSnapshot } from './db/actions';
-import { angleValuesAtom, isSdkReadyAtom } from './state';
+import { Message, MessageType } from '../types';
+import { saveSnapshot } from '../db/actions';
+import { angleValuesAtom, isSdkReadyAtom } from '../state';
+import useListeners from './useListeners';
 
 export default function useDeviceConnection() {
   const [isSdkReady, setIsSdkReady] = useAtom(isSdkReadyAtom);
   const setAngleValues = useSetAtom(angleValuesAtom);
+  const { addListener } = useListeners();
 
   const onSdkReady = useCallback(
     (isReady: boolean) => {
@@ -38,21 +43,24 @@ export default function useDeviceConnection() {
 
   useEffect(() => {
     if (!isSdkReady) {
-      init();
+      initialize();
+      showDevicesList();
       // deleteAllSnapshots();
     }
-  }, [isSdkReady]);
+  }, [isSdkReady, onSdkReady]);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('onSdkReady', onSdkReady);
-    DeviceEventEmitter.addListener('onError', onError);
-    DeviceEventEmitter.addListener('onInfo', onInfo);
-    DeviceEventEmitter.addListener('onMessage', onMessage);
+    const onSdkReadyListener = addListener('onSdkReady', onSdkReady);
+    const onErrorListener = addListener('onError', onError);
+    const onInfoListener = addListener('onInfo', onInfo);
+    const onMessageListener = addListener('onMessage', onMessage);
 
     return () => {
       destroy();
-
-      DeviceEventEmitter.removeAllListeners();
+      onErrorListener.remove();
+      onSdkReadyListener.remove();
+      onInfoListener.remove();
+      onMessageListener.remove();
     };
-  }, [onMessage, onSdkReady]);
+  }, [addListener, onMessage, onSdkReady]);
 }

@@ -83,7 +83,6 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -158,6 +157,7 @@
     ]
   },
   "dependencies": {
+    "@babel/runtime": "^7.23.5",
     "@types/react-native-vector-icons": "^6.4.13"
   }
 }

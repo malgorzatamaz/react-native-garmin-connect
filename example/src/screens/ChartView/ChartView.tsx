@@ -15,23 +15,21 @@ export const ChartView = () => {
   const [snapshots, setSnapshots] = useState<DataSnapshotResult>(mockData);
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>();
 
-  const getSnapshots = useCallback(() => {
-    setSnapshots(mockData);
-  }, []);
+  // const getSnapshots = useCallback(() => {
+  //   setSnapshots(mockData);
+  // }, []);
 
   // useEffect(() => {
   //   getSnapshots();
   // }, [getSnapshots]);
 
-  const onPointPress = useCallback((index) => {
+  const onPointPress = useCallback((index: number) => {
     setSelectedIndex(index);
   }, []);
 
-  const clearData = () => {
-    // getSnapshots();
-  };
-
-  console.log('snapshots', snapshots);
+  // const clearData = () => {
+  //   // getSnapshots();
+  // };
 
   return (
     <View style={styles.container}>

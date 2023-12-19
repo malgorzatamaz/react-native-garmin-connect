@@ -11,10 +11,10 @@ type Props = { item: Device; isConnected: boolean };
 
 export const DevicesListItem = memo(({ item, isConnected }: Props) => {
   const onPress = useCallback(() => {
-    connectDevice(item.name);
-  }, [item.name]);
+    connectDevice(item.id, item.model, item.name);
+  }, [item]);
 
-  const isWatch = item.name.toLowerCase().includes('fenix');
+  const isWatch = item?.name?.toLowerCase().includes('fenix');
 
   return (
     <TouchableOpacity

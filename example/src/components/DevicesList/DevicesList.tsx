@@ -12,7 +12,6 @@ type Props = {
 
 export const DevicesList = ({ isSdkReady }: Props) => {
   const { devices, refreshDevices, connectedDevice } = useDevices(isSdkReady);
-
   const renderItem: ListRenderItem<Device> = ({ item }) => (
     <DevicesListItem item={item} isConnected={item.name === connectedDevice} />
   );

@@ -6,7 +6,7 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const GarminConnect = NativeModules.GarminConnect
+export const GarminConnect = NativeModules.GarminConnect
   ? NativeModules.GarminConnect
   : new Proxy(
       {},
@@ -17,26 +17,22 @@ const GarminConnect = NativeModules.GarminConnect
       }
     );
 
-export function init() {
-  return GarminConnect.init();
+export function initialize() {
+  GarminConnect.initialize('react-native-garmin-connect-example-app');
 }
 
 export function destroy() {
   return GarminConnect.destroy();
 }
 
-export async function getKnownDevicesList() {
-  return await GarminConnect.getKnownDevicesList();
-}
-
-export async function getAvailableDevicesList() {
-  return await GarminConnect.getAvailableDevicesList();
+export function showDevicesList() {
+  return GarminConnect.showDevicesList();
 }
 
 export async function getDevicesList() {
   return await GarminConnect.getDevicesList();
 }
 
-export async function connectDevice(name: string) {
-  return await GarminConnect.connectDevice(name);
+export async function connectDevice(id: string, model: string, name: string) {
+  return await GarminConnect.connectDevice(id, model, name);
 }

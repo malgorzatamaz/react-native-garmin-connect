@@ -1,4 +1,9 @@
-export type Device = { name: string; status: Status };
+export type Device = {
+  id: string;
+  model: string;
+  name: string;
+  status: Status;
+};
 
 export enum Status {
   CONNECTED = 'CONNECTED',
