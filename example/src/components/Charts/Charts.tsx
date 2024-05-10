@@ -17,6 +17,7 @@ export const Charts = ({ selectedIndex, snapshots }: Props) => {
   if (!snapshots) return <View style={styles.container} />;
 
   return (
+    //@ts-ignore
     <Chart
       style={styles.container}
       padding={{ left: 40, bottom: 20, right: 20, top: 20 }}

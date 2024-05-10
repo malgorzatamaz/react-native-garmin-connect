@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { getDevicesList, showDevicesList } from 'react-native-garmin-connect';
-import { Status } from '../../types';
+import {
+  Status,
+  getDevicesList,
+  showDevicesList,
+} from 'react-native-garmin-connect';
 import useListeners from '../../hooks/useListeners';
 
 export const useDevices = (isSdkReady: boolean) => {

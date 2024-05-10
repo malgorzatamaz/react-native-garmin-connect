@@ -1,18 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+// import { Button } from 'react-native-paper';
 
 import { Map } from '../../components/Map';
 import { Charts } from '../../components/Charts';
-import {
-  DataSnapshotResult,
-  deleteAllSnapshots,
-  getAllSnapshots,
-} from '../../db/actions';
+import { type DataSnapshotResult } from '../../db/actions';
 import mockData from '../../mocks/mockData';
 
 export const ChartView = () => {
-  const [snapshots, setSnapshots] = useState<DataSnapshotResult>(mockData);
+  const [snapshots] = useState<DataSnapshotResult>(mockData as any);
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>();
 
   // const getSnapshots = useCallback(() => {

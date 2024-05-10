@@ -1,11 +1,14 @@
 import React, { memo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { connectDevice } from 'react-native-garmin-connect';
+import {
+  Status,
+  connectDevice,
+  type Device,
+} from 'react-native-garmin-connect';
+import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Device, Status } from '../../../types';
 import { DeviceStatus } from '../DeviceStatus';
-import { Text } from 'react-native-paper';
 
 type Props = { item: Device; isConnected: boolean };
 

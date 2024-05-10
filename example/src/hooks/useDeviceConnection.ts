@@ -1,12 +1,8 @@
-import {
-  initialize,
-  destroy,
-  showDevicesList,
-} from 'react-native-garmin-connect';
+import { initialize, destroy } from 'react-native-garmin-connect';
 import { useCallback, useEffect } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 
-import { Message, MessageType } from '../types';
+import { type Message, MessageType } from '../types';
 import { saveSnapshot } from '../db/actions';
 import { angleValuesAtom, isSdkReadyAtom } from '../state';
 import useListeners from './useListeners';
@@ -44,7 +40,6 @@ export default function useDeviceConnection() {
   useEffect(() => {
     if (!isSdkReady) {
       initialize();
-      showDevicesList();
       // deleteAllSnapshots();
     }
   }, [isSdkReady, onSdkReady]);

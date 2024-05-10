@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList, ListRenderItem, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, type ListRenderItem } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import type { Device } from 'react-native-garmin-connect';
 
 import { DevicesListItem } from './DevicesListItem';
-import type { Device } from '../../types';
 import { useDevices } from './useDevices';
 
 type Props = {

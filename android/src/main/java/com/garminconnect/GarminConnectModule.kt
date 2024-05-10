@@ -8,15 +8,15 @@ import com.garmin.android.connectiq.ConnectIQ
 import com.garmin.android.connectiq.ConnectIQ.*
 import com.garmin.android.connectiq.IQApp
 import com.garmin.android.connectiq.IQDevice
-import com.garmin.android.connectiq.IQDevice.IQDeviceStatus
 import com.garmin.android.connectiq.exception.InvalidStateException
 import com.garmin.android.connectiq.exception.ServiceUnavailableException
 import com.garminconnect.AppConstants.STATUS_OFFLINE
 import com.garminconnect.AppConstants.STATUS_ONLINE
 import com.google.gson.Gson
 
-class GarminConnectModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext), ConnectIQListener, IQApplicationEventListener,
+class GarminConnectModule internal constructor(reactContext: ReactApplicationContext) :
+  GarminConnectSpec(reactContext),
+  ConnectIQListener, IQApplicationEventListener,
   IQApplicationInfoListener, IQDeviceEventListener {
   companion object {
     const val NAME = "GarminConnect"
@@ -35,19 +35,23 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun initialize() {
+  override fun initGarminSDK(_: String) {
     myApp = IQApp(AppConstants.APP_ID);
     connectIQ = ConnectIQ.getInstance(getContext(), IQConnectType.WIRELESS);
     connectIQ?.initialize(getContext(), false, this);
   }
 
   @ReactMethod
-  fun destroy() {
+  override fun destroy() {
     if (connectIQ != null) {
       disconnectDevice()
       connectIQ?.unregisterAllForEvents();
       connectIQ?.shutdown(getContext());
     }
+  }
+
+  override fun showDevicesList() {
+    throw NotImplementedError("only used needed on iOS")
   }
 
   fun onMessage(type: String, payload: String) {
@@ -67,7 +71,7 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getDevicesList(promise: Promise) {
+  override fun getDevicesList(_: String, promise: Promise) {
     val devices: WritableArray = WritableNativeArray()
 
     try {
@@ -97,53 +101,9 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
     promise.resolve(devices);
   }
 
-  // @ReactMethod
-  // fun getKnownDevicesList(promise: Promise) {
-  //   val devices: WritableArray = WritableNativeArray()
-  //   try {
-  //     val knownDevices = connectIQ?.knownDevices;
-  //     if (knownDevices != null && knownDevices.isNotEmpty()) {
-  //       knownDevices.forEach {
-  //         devices.pushString(it.friendlyName)
-  //       }
-  //     }
-  //   } catch (e: InvalidStateException) {
-  //     Log.d("error", "ConnectIQ is not in a valid state");
-  //     promise.reject(e);
-  //   } catch (e: ServiceUnavailableException) {
-  //     Log.d("error", "ServiceUnavailableException");
-  //     promise.reject(e);
-  //   }
-
-  //   promise.resolve(devices);
-  // }
-
-  // @ReactMethod
-  // fun getAvailableDevicesList(promise: Promise) {
-  //   val devices: WritableArray = WritableNativeArray()
-
-  //   try {
-  //     val connectedDevices = connectIQ?.connectedDevices;
-  //     if (connectedDevices != null && connectedDevices.isNotEmpty()) {
-
-  //       connectedDevices.forEach {
-  //         devices.pushString(it.friendlyName)
-  //       }
-  //     }
-  //   } catch (e: InvalidStateException) {
-  //     Log.d("error", "ConnectIQ is not in a valid state");
-  //     promise.reject(e);
-  //   } catch (e: ServiceUnavailableException) {
-  //     promise.reject(e);
-  //     Log.d("error", "ServiceUnavailableException");
-  //   }
-  //   promise.resolve(devices)
-  // }
 
   private fun disconnectDevice() {
     if (connectedDevice != null && sdkReady) {
-      // It is a good idea to unregister everything and shut things down to
-      // release resources and prevent unwanted callbacks.
       try {
         connectIQ?.unregisterForDeviceEvents(connectedDevice);
         if (myApp != null) {
@@ -157,15 +117,15 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
 
 
   @ReactMethod
-  fun connectDevice(deviceName: String, promise: Promise) {
+  override fun connectDevice(id: String, model: String, name: String, promise: Promise) {
     val TAG = "connectDevice";
     var registerdForDeviceEvents = false;
     var registerForAppEvents = false;
 
-    if (deviceName != null && sdkReady) {
+    if (name != null && sdkReady) {
       val connectIQdevice =
         connectIQ?.knownDevices?.first { device ->
-          device.friendlyName.equals(deviceName)
+          device.friendlyName.equals(name)
         }
 
       // Register for device status updates
@@ -193,13 +153,12 @@ class GarminConnectModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun sendMessage(messageObject: WritableMap) {
+  override fun sendMessage(message: String) {
     val TAG = "sendMessage"
     try {
-      Log.d(TAG, messageObject.toString())
       try {
         connectIQ?.sendMessage(
-          connectedDevice, myApp, messageObject
+          connectedDevice, myApp, message
         ) { iqDevice: IQDevice, iqApp: IQApp, iqMessageStatus: IQMessageStatus ->
           run {
             Log.e(TAG, "status: " + iqMessageStatus.name);

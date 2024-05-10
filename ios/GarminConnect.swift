@@ -15,7 +15,7 @@ public class GarminConnect: RCTEventEmitter, IQDeviceEventDelegate, IQAppMessage
       }
 
     
-    @objc func initialize(_ urlScheme: String){
+    @objc func initGarminSDK(_ urlScheme: String){
         ConnectIQ.sharedInstance().initialize(withUrlScheme: urlScheme, uiOverrideDelegate: nil)
         GarminDeviceStorage.urlScheme = urlScheme
         self.onSdkReady()
