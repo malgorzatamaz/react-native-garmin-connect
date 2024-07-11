@@ -6,9 +6,11 @@ export interface Spec extends TurboModule {
   initGarminSDK(urlParam?: string): void;
   destroy(): void;
   showDevicesList(): void;
-  getDevicesList(urlParam?: string): Promise<Device[]>;
-  connectDevice(id: string, model: string, name: string): Promise<string>;
+  getDevicesList(): Promise<Device[]>;
+  connectDevice(id: string, model: string, name: string): void;
   sendMessage(message: string): void;
+  addListener: (eventType: string) => void;
+  removeListeners: (count: number) => void;
 }
 
 export default TurboModuleRegistry.get<Spec>('GarminConnect') as Spec | null;

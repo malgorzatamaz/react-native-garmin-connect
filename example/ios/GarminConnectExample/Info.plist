@@ -39,18 +39,21 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>gcm-ciq</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-  <dict>
-    <!-- Do not change NSAllowsArbitraryLoads to true, or you will risk app rejection! -->
-    <key>NSAllowsArbitraryLoads</key>
-    <false/>
-    <key>NSAllowsLocalNetworking</key>
-    <true/>
-  </dict>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-  <string>Requires bluetooth to connect with watch</string>
+	<string>Requires bluetooth to connect with watch</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Requires bluetooth to connect with watch</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -82,7 +85,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv64</string>
-    <string>arm64</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

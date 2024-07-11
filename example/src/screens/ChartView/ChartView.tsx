@@ -1,31 +1,34 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-// import { Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 import { Map } from '../../components/Map';
 import { Charts } from '../../components/Charts';
-import { type DataSnapshotResult } from '../../db/actions';
-import mockData from '../../mocks/mockData';
+import {
+  type DataSnapshotResult,
+  deleteAllSnapshots,
+  getAllSnapshots,
+} from '../../db/actions';
 
 export const ChartView = () => {
-  const [snapshots] = useState<DataSnapshotResult>(mockData as any);
+  const [snapshots, setSnapshots] = useState<DataSnapshotResult>();
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>();
 
-  // const getSnapshots = useCallback(() => {
-  //   setSnapshots(mockData);
-  // }, []);
+  const getSnapshots = useCallback(() => {
+    setSnapshots(getAllSnapshots());
+  }, []);
 
-  // useEffect(() => {
-  //   getSnapshots();
-  // }, [getSnapshots]);
+  useEffect(() => {
+    getSnapshots();
+  }, [getSnapshots]);
 
   const onPointPress = useCallback((index: number) => {
     setSelectedIndex(index);
   }, []);
 
-  // const clearData = () => {
-  //   // getSnapshots();
-  // };
+  const clearData = () => {
+    deleteAllSnapshots();
+  };
 
   return (
     <View style={styles.container}>
@@ -36,12 +39,12 @@ export const ChartView = () => {
         onPointPress={onPointPress}
       />
 
-      {/* <Button mode="contained" style={styles.button} onPress={getSnapshots}>
+      <Button mode="contained" style={styles.button} onPress={getSnapshots}>
         Refresh
       </Button>
       <Button mode="contained" style={styles.button} onPress={clearData}>
         Clear data
-      </Button> */}
+      </Button>
     </View>
   );
 };

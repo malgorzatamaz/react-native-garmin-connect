@@ -38,9 +38,7 @@ export const GarminConnect = GarminConnectModule
     );
 
 export function initialize() {
-  Platform.OS === 'ios'
-    ? GarminConnect.initGarminSDK('react-native-garmin-connect-example-app')
-    : GarminConnect.initGarminSDK();
+  GarminConnect.initGarminSDK('react-native-garmin-connect-example-app');
 }
 
 export function destroy() {

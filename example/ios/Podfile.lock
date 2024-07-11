@@ -956,7 +956,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps (1.15.0):
+  - react-native-maps (1.15.6):
     - React-Core
   - react-native-safe-area-context (4.10.0):
     - DoubleConversion
@@ -1254,7 +1254,7 @@ PODS:
     - React-utils (= 0.74.0)
   - RealmJS (11.10.2):
     - React
-  - RNGestureHandler (2.16.0):
+  - RNGestureHandler (2.17.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1275,7 +1275,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated (3.10.0):
+  - RNReanimated (3.9.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1296,7 +1296,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.31.1):
+  - RNScreens (3.32.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1317,9 +1317,9 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 3.31.1)
+    - RNScreens/common (= 3.32.0)
     - Yoga
-  - RNScreens/common (3.31.1):
+  - RNScreens/common (3.32.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1621,7 +1621,7 @@ SPEC CHECKSUMS:
   React-logger: 03f2f7b955cfe24593a2b8c9705c23e142d1ad24
   React-Mapbuffer: 5e05d78fe6505f4a054b86f415733d4ad02dd314
   react-native-garmin-connect: af8abde4eb7526a5c02e9595514c7acc492ff592
-  react-native-maps: 3566f0e216d00fe3789964eeeddf02b9dbd08092
+  react-native-maps: 7b2c2cee95271592a92ba485eea1dec66a363a6e
   react-native-safe-area-context: 0e1797fd55c27b94117b32454ba98be9a9cf7dcd
   React-nativeconfig: 951ec32f632e81cbd7d40aebb3211313251c092e
   React-NativeModulesApple: 0b3a42ca90069119ef79d8b2327d01441d71abd4
@@ -1647,9 +1647,9 @@ SPEC CHECKSUMS:
   React-utils: f013537c3371270d2095bff1d594d00d4bc9261b
   ReactCommon: 2cde697fd80bd31da1d6448d25a5803088585219
   RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
-  RNGestureHandler: 9265c3b902cd8408ba4376b1a34d9708a6da4ac3
-  RNReanimated: 413d65dcedfe93624bbfb755c63020f1e57c7990
-  RNScreens: 63fe8222c172a79f5c30dd1aefaeb369c6eb57b6
+  RNGestureHandler: 42f1d03e80c71bdfd6de5dae295ddc3b8b73f8b2
+  RNReanimated: 54545820b1c84b3410acde21f448e782d35317b4
+  RNScreens: d3d50aa84db4541eee00fbb1f32151030f56c510
   RNSVG: 02051bffb0b2fb2166e85009a58211643434ff63
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d

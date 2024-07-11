@@ -4,52 +4,46 @@ import Combine
 import ConnectIQ
 import Foundation
 
-
-@objc(GarminConnect)
-public class GarminConnect: RCTEventEmitter, IQDeviceEventDelegate, IQAppMessageDelegate {
+@objc(GarminConnectModule)
+public class GarminConnectModule: NSObject, IQDeviceEventDelegate, IQAppMessageDelegate {
     private let watchAppUuid = UUID(uuidString: AppConstants.APP_ID)
     private var connectedApp: IQApp? = nil
-
-      override init() {
-          super.init()
-      }
-
     
-    @objc func initGarminSDK(_ urlScheme: String){
-        ConnectIQ.sharedInstance().initialize(withUrlScheme: urlScheme, uiOverrideDelegate: nil)
-        GarminDeviceStorage.urlScheme = urlScheme
+    private var emitter: RCTEventEmitter!
+
+    @objc public func setEventEmitter(eventEmitter: RCTEventEmitter){
+        self.emitter = eventEmitter
+    }
+    
+    @objc public func initGarminSDK(urlScheme: NSString){
+        ConnectIQ.sharedInstance().initialize(withUrlScheme: urlScheme as String, uiOverrideDelegate: nil)
+        GarminDeviceStorage.urlScheme = urlScheme as String
         self.onSdkReady()
     }
     
-    @objc
-    public override static func requiresMainQueueSetup() -> Bool {
-        return true
-    }
-
     @objc func destroy(){
         ConnectIQ.sharedInstance().unregister(forAllDeviceEvents: self)
         ConnectIQ.sharedInstance().unregister(forAllAppMessages: self)
     }
 
       
-    @objc func showDevicesList(){
+    @objc public func showDevicesList(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             ConnectIQ.sharedInstance().showDeviceSelection()
         }
     }
     
-    @objc(getDevicesList:rejecter:)
-    func getDevicesList(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
-        GarminDeviceStorage.getDevicesList(resolve, rejecter: reject)
+    @objc public func getDevicesList(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        GarminDeviceStorage.getDevicesList(resolve, reject: reject)
     }
 
     @objc(connectDevice:model:name:)
-    func connectDevice(id: String, model: String, name: String) {
+    public func connectDevice(id: String, model: String, name: String) {
         let device = IQDevice.init(id: UUID(uuidString: id), modelName: model, friendlyName: name)
         ConnectIQ.sharedInstance().register(forDeviceEvents: device, delegate: self)
     }
 
-    @objc func sendMessage(_ message: String) {
+    @objc public func sendMessage(_ message: String) {
         if let currentApp = connectedApp {
             ConnectIQ.sharedInstance().sendMessage(message, to: currentApp, progress: nil, completion: nil)
         }
@@ -92,7 +86,7 @@ public class GarminConnect: RCTEventEmitter, IQDeviceEventDelegate, IQAppMessage
      }
     
     func onSdkReady() {
-        self.sendEvent(withName: "onSdkReady", body: true)
+        self.emitter.sendEvent(withName: "onSdkReady", body: true)
     }
 
     func onMessage(body: NSMutableDictionary) {
@@ -106,25 +100,18 @@ public class GarminConnect: RCTEventEmitter, IQDeviceEventDelegate, IQAppMessage
             message["payload"] = payloadString;
         }
         
-        self.sendEvent(withName: "onMessage", body: message)
+        self.emitter.sendEvent(withName: "onMessage", body: message)
     }
 
     func onError(error: NSString) {
-        self.sendEvent(withName: "onError", body: error)
+        self.emitter.sendEvent(withName: "onError", body: error)
     }
 
-    func onInfo(info: NSString) {
-        self.sendEvent(withName: "onInfo", body: info)
-    }
 
     func onDeviceStatusChanged(_ device: IQDevice, status: String) {
         let deviceObject: NSMutableDictionary = [:]
         deviceObject["name"] = device.friendlyName
         deviceObject["status"] = status
-        self.sendEvent(withName: "onDeviceStatusChanged", body: deviceObject)
-    }
-
-    open override func supportedEvents() -> [String] {
-        ["onSdkReady", "onMessage", "onError", "onInfo", "onDeviceStatusChanged"]
+        self.emitter.sendEvent(withName: "onDeviceStatusChanged", body: deviceObject)
     }
 }
