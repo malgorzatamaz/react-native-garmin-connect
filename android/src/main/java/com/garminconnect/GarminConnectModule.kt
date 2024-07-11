@@ -35,7 +35,7 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
   }
 
   @ReactMethod
-  override fun initGarminSDK(_: String) {
+  override fun initGarminSDK(urlName: String?) {
     myApp = IQApp(AppConstants.APP_ID);
     connectIQ = ConnectIQ.getInstance(getContext(), IQConnectType.WIRELESS);
     connectIQ?.initialize(getContext(), false, this);
@@ -51,7 +51,7 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
   }
 
   override fun showDevicesList() {
-    throw NotImplementedError("only used needed on iOS")
+    throw NotImplementedError("only used on iOS")
   }
 
   fun onMessage(type: String, payload: String) {
@@ -71,7 +71,7 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
   }
 
   @ReactMethod
-  override fun getDevicesList(_: String, promise: Promise) {
+  override fun getDevicesList(promise: Promise) {
     val devices: WritableArray = WritableNativeArray()
 
     try {
@@ -117,7 +117,7 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
 
 
   @ReactMethod
-  override fun connectDevice(id: String, model: String, name: String, promise: Promise) {
+  override fun connectDevice(id: String?, model: String?, name: String?) {
     val TAG = "connectDevice";
     var registerdForDeviceEvents = false;
     var registerForAppEvents = false;
@@ -134,7 +134,6 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
         registerdForDeviceEvents = true;
       } catch (e: InvalidStateException) {
         Log.d(TAG, "InvalidStateException:  We should not be here!")
-        promise.reject(e)
       }
 
       // Register to receive messages from the device
@@ -143,13 +142,11 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
         registerForAppEvents = true;
       } catch (e: InvalidStateException) {
         Log.d(TAG, "ConnectIQ is not in a valid state. " + e.message)
-        promise.reject(e)
       }
     }
 
     if (registerForAppEvents && registerdForDeviceEvents) {
-      promise.resolve(null)
-    } else promise.reject(Exception("Not connected to every events"))
+    }
   }
 
   @ReactMethod
@@ -177,6 +174,13 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
     }
   }
 
+  override fun addListener(eventType: String?) {
+    throw NotImplementedError("only used on iOS")
+  }
+
+  override fun removeListeners(count: Double) {
+    throw NotImplementedError("only used on iOS")
+  }
 
   override fun onMessageReceived(
     device: IQDevice?,
@@ -222,17 +226,13 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
   }
 
   override fun onApplicationInfoReceived(info: IQApp?) {
-    //Garmin Connect installed
-    this.reactApplicationContext
-      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      .emit("onInfo", info.toString())
   }
 
   override fun onApplicationNotInstalled(info: String?) {
     //Garmin Connect not installed
     this.reactApplicationContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      .emit("onInfo", info.toString())
+      .emit("onInfo", "Garmin Connect app is required.")
   }
 
   override fun onDeviceStatusChanged(device: IQDevice?, status: IQDevice.IQDeviceStatus?) {

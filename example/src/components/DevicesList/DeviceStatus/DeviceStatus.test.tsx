@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react-native';
 import React from 'react';
-import type { ViewStyle } from 'react-native';
 import { Status } from 'react-native-garmin-connect';
+import type { ViewStyle } from 'react-native';
 
 import { DeviceStatus } from './DeviceStatus';
 

@@ -30,7 +30,7 @@ export const useDevices = (isSdkReady: boolean) => {
   );
 
   useEffect(() => {
-    if ((isSdkReady || Platform.OS === 'ios') && devices.length === 0) {
+    if (isSdkReady && devices.length === 0) {
       getDevices();
     }
   }, [devices.length, getDevices, isSdkReady]);

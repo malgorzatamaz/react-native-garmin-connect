@@ -1,4 +1,8 @@
-import { initialize, destroy } from 'react-native-garmin-connect';
+import {
+  initialize,
+  destroy,
+  // showDevicesList,
+} from 'react-native-garmin-connect';
 import { useCallback, useEffect } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 
@@ -36,6 +40,8 @@ export default function useDeviceConnection() {
     },
     [setAngleValues]
   );
+
+  console.log('isReady', isSdkReady);
 
   useEffect(() => {
     if (!isSdkReady) {

@@ -1,3 +1,4 @@
+//@ts-ignore
 import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Status } from 'react-native-garmin-connect';

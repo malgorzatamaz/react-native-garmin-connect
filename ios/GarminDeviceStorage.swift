@@ -27,7 +27,7 @@ public class GarminDeviceStorage: NSObject {
         }
     }
     
-    static func getDevicesList(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    static func getDevicesList(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         let result = UserDefaults.standard.object(forKey: self.devicesListKey)
         let devicesList: NSMutableArray = []
         

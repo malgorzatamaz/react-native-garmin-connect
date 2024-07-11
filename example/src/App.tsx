@@ -17,7 +17,7 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="ChartView">
+        <Tab.Navigator initialRouteName="DeviceManager">
           <Tab.Screen
             name="DeviceManager"
             options={{

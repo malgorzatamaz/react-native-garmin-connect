@@ -1,3 +1,4 @@
+//@ts-ignore
 import React, { useCallback, useMemo } from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StyleSheet } from 'react-native';
