@@ -21,7 +21,6 @@ export const useDevices = (isSdkReady: boolean) => {
 
   const onDeviceStatusChanged = useCallback(
     ({ name, status }: { name: string; status: string }) => {
-      console.log('onDeviceStatusChanged', name, status);
       if (status === Status.CONNECTED) {
         setConnectedDevice(name);
       }
@@ -45,13 +44,7 @@ export const useDevices = (isSdkReady: boolean) => {
       onErrorListener.remove();
       onStatusChangedListener.remove();
     };
-  }, [
-    addListener,
-    devices.length,
-    getDevices,
-    isSdkReady,
-    onDeviceStatusChanged,
-  ]);
+  }, [addListener, devices.length, isSdkReady, onDeviceStatusChanged]);
 
   const onError = (error: string) => {
     console.log('onError', error);

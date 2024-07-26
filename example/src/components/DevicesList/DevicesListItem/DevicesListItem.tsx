@@ -36,7 +36,12 @@ export const DevicesListItem = memo(({ item, isConnected }: Props) => {
           {item.name}
         </Text>
         {isConnected ? (
-          <MaterialCommunityIcons name="connection" color="black" size={26} />
+          <MaterialCommunityIcons
+            testID="connectedIcon"
+            name="connection"
+            color="black"
+            size={26}
+          />
         ) : null}
         <DeviceStatus status={item.status} />
       </View>

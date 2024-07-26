@@ -11,7 +11,9 @@ export const DeviceStatus = memo(({ status }: Props) => {
       testID="status"
       style={[
         styles.dot,
-        status === Status.ONLINE ? styles.dotOnline : styles.dotOffline,
+        status === Status.ONLINE || status === Status.CONNECTED
+          ? styles.dotOnline
+          : styles.dotOffline,
       ]}
     />
   );
