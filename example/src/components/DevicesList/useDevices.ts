@@ -4,11 +4,12 @@ import {
   Status,
   getDevicesList,
   showDevicesList,
+  type Device,
 } from 'react-native-garmin-connect';
 import useListeners from '../../hooks/useListeners';
 
 export const useDevices = (isSdkReady: boolean) => {
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<Device[] | []>([]);
   const [connectedDevice, setConnectedDevice] = useState<string | undefined>();
   const { addListener } = useListeners();
 
