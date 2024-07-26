@@ -10,6 +10,7 @@ import { type Message, MessageType } from '../types';
 import { saveSnapshot } from '../db/actions';
 import { angleValuesAtom, isSdkReadyAtom } from '../state';
 import useListeners from './useListeners';
+import { urlSchema } from '../constants';
 
 export default function useDeviceConnection() {
   const [isSdkReady, setIsSdkReady] = useAtom(isSdkReadyAtom);
@@ -45,7 +46,7 @@ export default function useDeviceConnection() {
 
   useEffect(() => {
     if (!isSdkReady) {
-      initialize();
+      initialize(urlSchema);
       // deleteAllSnapshots();
     }
   }, [isSdkReady, onSdkReady]);

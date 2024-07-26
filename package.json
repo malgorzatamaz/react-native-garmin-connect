@@ -1,6 +1,6 @@
 {
   "name": "react-native-garmin-connect",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "description",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -71,6 +71,7 @@
     "react-native-builder-bob": "^0.23.2",
     "release-it": "17.6.0",
     "turbo": "^1.10.7",
+    "typedoc": "^0.26.5",
     "typescript": "^5.2.2"
   },
   "resolutions": {

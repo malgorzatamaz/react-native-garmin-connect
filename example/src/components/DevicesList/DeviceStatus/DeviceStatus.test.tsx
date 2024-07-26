@@ -5,16 +5,6 @@ import { type ViewStyle } from 'react-native';
 
 import { DeviceStatus } from './DeviceStatus';
 
-// import { StyleSheet } from 'react-native/Libraries/StyleSheet/StyleSheet';
-
-// jest.mock('react-native/Libraries/BatchedBridge/NativeModules.js', () => ({
-//   Platform: {},
-// }));
-
-// jest.mock('react-native/Libraries/StyleSheet/StyleSheet', () => ({
-//   create: jest.fn(),
-// }));
-
 jest.mock('react-native-garmin-connect', () => {
   enum mockStatus {
     CONNECTED = 'CONNECTED',
