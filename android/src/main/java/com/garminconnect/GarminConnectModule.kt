@@ -119,8 +119,6 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
   @ReactMethod
   override fun connectDevice(id: String?, model: String?, name: String?) {
     val TAG = "connectDevice";
-    var registerdForDeviceEvents = false;
-    var registerForAppEvents = false;
 
     if (name != null && sdkReady) {
       val connectIQdevice =
@@ -131,7 +129,6 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
       // Register for device status updates
       try {
         connectIQ?.registerForDeviceEvents(connectIQdevice, this)
-        registerdForDeviceEvents = true;
       } catch (e: InvalidStateException) {
         Log.d(TAG, "InvalidStateException:  We should not be here!")
       }
@@ -139,13 +136,9 @@ class GarminConnectModule internal constructor(reactContext: ReactApplicationCon
       // Register to receive messages from the device
       try {
         connectIQ?.registerForAppEvents(connectIQdevice, myApp, this)
-        registerForAppEvents = true;
       } catch (e: InvalidStateException) {
         Log.d(TAG, "ConnectIQ is not in a valid state. " + e.message)
       }
-    }
-
-    if (registerForAppEvents && registerdForDeviceEvents) {
     }
   }
 
