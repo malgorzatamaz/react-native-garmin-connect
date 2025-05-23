@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/malgorzatamaz/react-native-garmin-connect.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.source_files = "ios/*.{h,m,mm,swift}"
   s.vendored_frameworks = 'ios/ConnectIQ.xcframework'
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
@@ -38,5 +38,5 @@ Pod::Spec.new do |s|
     s.dependency "RCTTypeSafety"
     s.dependency "ReactCommon/turbomodule/core"
    end
-  end    
+  end
 end
